@@ -15,6 +15,8 @@ import dmax.dialog.SpotsDialog
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
+import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.rxkotlin.toObservable
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -73,12 +75,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startRStream(){
-        val myObservable= getObservable()
-        val myObserver=getObserver()
-        myObservable.subscribe(myObserver)
+        val list=listOf(1,2,3,4,5)
+        list.toObservable().subscribeBy(
+                onNext = {println(it)},
+                onComplete = {println("onComplete")},
+                onError = {it.printStackTrace()}
+        )
     }
 
-    private fun getObserver(): Observer<Int>{
+  /*  private fun getObserver(): Observer<Int>{
         return object : Observer<Int>{
             override fun onSubscribe(d: Disposable) {
 
@@ -99,5 +104,5 @@ class MainActivity : AppCompatActivity() {
     }
     private fun getObservable() : Observable<Int> {
         return Observable.just(1,2,3)
-    }
+    }*/
 }
